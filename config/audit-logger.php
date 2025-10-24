@@ -11,7 +11,7 @@ return [
     | This option controls the default audit driver that will be used to store
     | audit logs.
     |
-    | Supported: "mysql"
+    | Supported: "mysql", "postgresql"
     |
     */
     'default' => env('AUDIT_DRIVER', 'mysql'),
@@ -27,6 +27,12 @@ return [
     'drivers' => [
         'mysql' => [
             'connection' => env('AUDIT_MYSQL_CONNECTION', config('database.default')),
+            'table_prefix' => env('AUDIT_TABLE_PREFIX', 'audit_'),
+            'table_suffix' => env('AUDIT_TABLE_SUFFIX', '_logs'),
+        ],
+
+        'postgresql' => [
+            'connection' => env('AUDIT_PGSQL_CONNECTION', config('database.default')),
             'table_prefix' => env('AUDIT_TABLE_PREFIX', 'audit_'),
             'table_suffix' => env('AUDIT_TABLE_SUFFIX', '_logs'),
         ],

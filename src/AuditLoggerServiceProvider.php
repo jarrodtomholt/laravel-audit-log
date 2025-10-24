@@ -9,6 +9,7 @@ use iamfarhad\LaravelAuditLog\Contracts\AuditLogInterface;
 use iamfarhad\LaravelAuditLog\Contracts\CauserResolverInterface;
 use iamfarhad\LaravelAuditLog\Contracts\RetentionServiceInterface;
 use iamfarhad\LaravelAuditLog\Drivers\MySQLDriver;
+use iamfarhad\LaravelAuditLog\Drivers\PostgreSQLDriver;
 use iamfarhad\LaravelAuditLog\DTOs\AuditLog;
 use iamfarhad\LaravelAuditLog\Services\AuditLogger;
 use iamfarhad\LaravelAuditLog\Services\CauserResolver;
@@ -42,10 +43,12 @@ final class AuditLoggerServiceProvider extends ServiceProvider
 
         // Register the main audit logger service - use fully qualified namespace
         $this->app->singleton(AuditLogger::class, function ($app) {
-            $connection = $app['config']['audit-logger.drivers.mysql.connection'] ?? config('database.default');
+            $driverName = $app['config']['audit-logger.default'] ?? 'mysql';
+            $connection = $app['config']["audit-logger.drivers.{$driverName}.connection"] ?? config('database.default');
 
-            $driver = match ($app['config']['audit-logger.default']) {
+            $driver = match ($driverName) {
                 'mysql' => new MySQLDriver($connection),
+                'postgresql' => new PostgreSQLDriver($connection),
                 default => new MySQLDriver($connection),
             };
 
