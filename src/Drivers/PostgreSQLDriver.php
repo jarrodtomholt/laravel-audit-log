@@ -234,4 +234,3 @@ final class PostgreSQLDriver implements AuditDriverInterface
         return "{$this->tablePrefix}{$tableName}{$this->tableSuffix}";
     }
 }
-

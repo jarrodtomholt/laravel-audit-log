@@ -173,4 +173,3 @@ final class PostgreSQLDriverTest extends TestCase
         parent::tearDown();
     }
 }
-
